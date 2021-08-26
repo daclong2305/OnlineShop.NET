@@ -1,0 +1,140 @@
+﻿@model ViewModel5
+@{
+    ViewData["title"] = "Chi tiết đơn hàng";
+    Layout = "~/Areas/Staff/Views/Shared/_Layouta.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản lý đơn hàng</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Staff/Home/Index">Home</a></li>
+                    <li class="breadcrumb-item active">DataTables</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<div class="content">
+    <div class="container-fluid">
+        <!-- your content here -->
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="modal-title">Chi tiết đơn hàng</h3>
+                </div>
+                <div class="card-body">
+                    <form id="save" action="/Staff/Order/OrderDetail1" method="post">
+                        <div class="form-group">
+                            <label for="">Mã đơn hàng</label>
+                            <input type="text" class="form-control" name="order_id" value="@Model.order_id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Người đặt</label>
+                            <input type="text" class="form-control" name="name" value="@Model.name" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Điện thoại</label>
+                            <input type="text" class="form-control" name="phone" value="@Model.phone" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Email</label>
+                            <input type="text" class="form-control" name="email" value="@Model.email" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Địa chỉ</label>
+                            <input type="text" class="form-control" name="address" value="@Model.address" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Ghi chú</label>
+                            <textarea class="form-control" name="note" value="" readonly>@Model.note</textarea>
+                        </div>
+                        <!-- <div class="form-group">
+                <label for="">Ngày đặt</label>
+                <input type="text" class="form-control" name="name" value="<?php echo $row['order_date']  ?>"readonly>
+            </div> -->
+                        <div class="form-group">
+                            <label for="">Ngày đặt</label>
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" name="order_date" value="@Model.order_date" />
+                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Số lượng</label>
+                            <input type="text" class="form-control" name="quantity" value="@Model.quantity">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Thành tiền</label>
+                            <input type="text" class="form-control" name="total" value="@Model.total">
+                        </div>
+                        <div class="form-group clearfix">
+                            <label>Thanh toán</label><br><br>
+                            <div class="icheck-danger d-inline">
+                                @if (Model.paid_status == 0)
+                                {
+                                    <input type="radio" name="paid_status" checked value="0" id="unpaid">
+                                }
+                                else
+                                {
+                                    <input type="radio" name="paid_status" value="0" id="unpaid">
+                                }
+                                <label for="unpaid">
+                                    Chưa thanh toán
+                                </label>
+                            </div>
+                            <div class="icheck-success d-inline">
+                                @if (Model.paid_status == 1)
+                                {
+                                    <input type="radio" name="paid_status" checked value="1" id="paid">
+                                }
+                                else
+                                {
+                                    <input type="radio" name="paid_status" value="1" id="paid">
+                                }
+                                <label for="paid">
+                                    Đã thanh toán
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label>Giao hàng</label><br>
+                            <div class="icheck-danger d-inline">
+                                @if (Model.status == 0)
+                                {
+                                    <input type="radio" name="status" checked value="0" id="undelivered">
+                                }
+                                else
+                                {
+                                    <input type="radio" name="status" value="0" id="undelivered">
+                                }
+                                <label for="undelivered">
+                                    Chưa xử lí
+                                </label>
+                            </div>
+                            <div class="icheck-success d-inline">
+                                @if (Model.status == 1)
+                                {
+                                    <input type="radio" name="status" checked value="1" id="delivered">
+                                }
+                                else
+                                {
+                                    <input type="radio" name="status" value="1" id="delivered">
+                                }
+                                <label for="delivered">
+                                    Đã xử lí
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

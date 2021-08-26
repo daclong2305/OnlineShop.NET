@@ -1,0 +1,147 @@
+﻿@model ViewModel7
+@{
+    ViewData["title"] = "Thêm";
+    Layout = "~/Areas/Staff/Views/Shared/_Layouta.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản lý đơn hàng</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Staff/Home/Index">Home</a></li>
+                    <li class="breadcrumb-item active">DataTables</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<div class="content">
+    <div class="container-fluid">
+        <!-- your content here -->
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h3 class="card-title">Thêm đơn hàng</h3>
+                </div>
+                <div class="card-body">
+                    <form id="save" action="/Staff/Order/CreateOrder" method="post">
+                        <label>Thêm sản phẩm:</label><br>
+                        Sản phẩm: <select name="product" id="product" class="form-control select2">
+                            @foreach (var itemm in Model.p)
+                            {
+                                <option value="@itemm.product_id" product_name="@itemm.product_title" price="@itemm.product_price">
+                                    @itemm.product_id - @itemm.product_title - @itemm.product_price đ
+                                </option>
+                            }
+                        </select>
+                        Số lượng: <input type="number" id="quantity" class="form-control" min="1" max="50" value="1">
+
+                        <br>
+                        <button type="button" class="btn btn-primary" id="add_item">Chọn</button>
+                        <br>
+                        <br>
+
+                        <table class="table table-bordered table-hover" id="items_table">
+                            <tr>
+                                <th>Id</th>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Xóa</th>
+                            </tr>
+                        </table>
+                        <label>Tổng: </label>
+                        <div class="total">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="">Người đặt hàng</label>
+                            <select class="form-control select2" name="user_id" style="width: 100%;" id="select-items">
+                                @foreach (var item in Model.u)
+                                {
+                                    <option value=@item.user_id>
+                                        @item.user_id - @item.first_name @item.last_name
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Ngày đặt</label>
+                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" name="order_date" />
+                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Ghi chú</label>
+                            <textarea class="form-control" name="note" value=""></textarea>
+                        </div>
+                        <div class=" form-group clearfix">
+                            <label>Thanh toán</label><br>
+                            <div class="icheck-danger d-inline">
+                                <input type="radio" name="paid_status" value="0" id="unpaid" checked>
+                                <label for="unpaid">
+                                    Chưa thanh toán
+                                </label>
+                            </div>
+                            <div class="icheck-success d-inline">
+                                <input type="radio" name="paid_status" value="1" id="paid">
+                                <label for="paid">
+                                    Đã thanh toán
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label>Giao hàng</label><br>
+                            <div class="icheck-danger d-inline">
+                                <input type="radio" name="status" value="0" id="undelivered" checked>
+                                <label for="undelivered">
+                                    Chưa giao hàng
+                                </label>
+                            </div>
+                            <div class="icheck-success d-inline">
+                                <input type="radio" name="status" value="1" id="delivered">
+                                <label for="delivered">
+                                    Đã giao hàng
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var S = 0;
+        $("#add_item").click(function () {
+            // var option = $('option:selected', this).attr('mytag');
+            var pro = $('option:selected', '#product').attr('product_name');
+            var price = $('option:selected', '#product').attr('price');
+            var id = $("#product").val();
+            var quan = $("#quantity").val();
+            $("#items_table").append("<tr><td><input style='border-style: none' type='text' name='product_id[]' value='" + id + "'  size='1' readonly/>" + "</td><td>" + pro + "</td><td><input style='border-style: none' type='text' name='quantity[]' value='" + quan + "'  size='1' readonly/>" + "</td><td class='total1'>" + price * quan + "</td><td>" + "<button type='button' class='btn btn-danger alo'>Xóa</button></td></tr>");
+            S += price * quan;
+
+            var text = "<h3>" + S + " đ</h3>";
+            $(".total").html(text);
+        });
+        $("#items_table").on('click', '.alo', function () {
+
+            var pr = $(this).parent().parent().find(".total1").text();
+            S -= pr;
+            $(this).parent().parent().remove();
+            var text = "<h3>" + S + " đ</h3>";
+            $(".total").html(text);
+        });
+    });
+</script>

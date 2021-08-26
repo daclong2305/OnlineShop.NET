@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Thành công";
+    if (Context.Session.GetString("username") != null)
+    {
+        ViewData["acc"] = "Hi " + Context.Session.GetString("username");
+    }
+    else
+    {
+        ViewData["acc"] = "My Account";
+    }
+}
+<div class="success">
+    <div class="success-card">
+        <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+            <i class="checkmark">✓</i>
+        </div>
+        <h1>Đặt hàng thành công</h1>
+        <p>Hệ thống đã ghi nhận đơn hàng của bạn<br /> Cảm ơn bạn đã sử dụng hệ thống!</p>
+    </div>
+</div>
+<style>
+    .success {
+        text-align: center;
+        padding: 40px 0;
+        background: #EBF0F5;
+    }
+
+    .success-card h1 {
+        color: #88B04B;
+        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+        font-weight: 900;
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .success-card p {
+        color: #404F5E;
+        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+        font-size: 20px;
+        margin: 0;
+    }
+
+    .success-card i {
+        color: #9ABC66;
+        font-size: 100px;
+        line-height: 200px;
+        margin-left: -15px;
+    }
+
+    .success .success-card {
+        background: white;
+        padding: 60px;
+        border-radius: 4px;
+        box-shadow: 0 2px 3px #C8D0D8;
+        display: inline-block;
+        margin: 0 auto;
+    }
+
+    .bordered-box {
+        background: rgb(255, 255, 255);
+        color: rgb(51, 51, 51);
+        padding: 15px 25px 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        margin-right: 20px;
+        border: 1px solid rgb(221, 221, 221);
+    }
+</style>

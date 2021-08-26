@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ViewModel6>
+@{
+    ViewData["title"] = "Sản phẩm người dùng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouta.cshtml";
+}
+<table class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="">
+    <thead>
+        <tr>
+            <th>Sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Đơn giá</th>
+            <th>Tình trạng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        { 
+        <tr>
+            <td>
+                @item.product_title
+            </td>
+            <td>
+                @item.product_price
+            </td>
+            <td>
+                @item.quantity
+            </td>
+            <td>
+                @{ var total = item.product_price * item.quantity;}
+                @total
+            </td>
+            @if (item.stock > item.quantity)
+            {
+                <td>
+                    <span class='badge bg-success'>Đủ hàng</span>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <span class='badge bg-warning'>Không đủ hàng</span>
+                    @{ var a = item.quantity - item.stock; }
+                    Thiếu @a cái
+                </td>
+            }
+        </tr>
+        }
+    </tbody>
+</table>

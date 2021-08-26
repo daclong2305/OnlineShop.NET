@@ -1,0 +1,217 @@
+﻿@model User_Info
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    if (Context.Session.GetString("username") != null)
+    {
+        ViewData["acc"] = "Hi " + Context.Session.GetString("username");
+    }
+    else
+    {
+        ViewData["acc"] = "My Account";
+    }
+}
+<script src="~/js/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $(".updateCart").click(function (event) {
+            event.preventDefault();
+            var quantity = $(".quantity_" + $(this).attr("data-id")).val();
+            console.log(quantity);
+            $.ajax({
+                type: "POST",
+                url:"@Url.Action("updateCart","Home")",
+                data: {
+                    id: $(this).attr("data-id"),
+                    quantity:quantity
+                },
+                success: function (result) {
+                    window.location.href = '@Url.Action("Cart","Home")';
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    .bordered-box {
+        background: rgb(255, 255, 255);
+        color: rgb(51, 51, 51);
+        padding: 15px 25px 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        margin-right: 20px;
+        border: 1px solid rgb(221, 221, 221);
+    }
+</style>
+
+<section class="section">
+    <div class="container-fluid">
+        <div id="cart_checkout">
+            <div class="main ">
+                <div class="table-responsive">
+                    <form asp-controller="Home" asp-action="AddOrd" method="post">
+                        <div id="issessionset"></div>
+                        <table id="cart" class="table table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th style="width:50%">Sản phẩm</th>
+                                    <th style="width:10%">Giá</th>
+                                    <th style="width:8%">Số lượng</th>
+                                    <th style="width:10%" class="text-center">Tổng</th>
+                                    <th style="width:10%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.carts)
+                                {
+                                    string txt_class = "quantity_" + item.Product.product_id;
+                                    int total = item.Product.product_price * item.Quantity;
+                                    <tr>
+                                        <td data-th="Product">
+                                            <div class="row">
+                                                <div class="col-sm-4 ">
+                                                    <img src="/product_images/@item.Product.product_image" style="height: 70px;width:75px;">
+                                                    <h4 class="nomargin product-name header-cart-item-name"><a asp-controller="Product" asp-action="GetProduct" asp-route-id="@item.Product.product_id">@item.Product.product_title</a></h4>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div style="max-width: 50px;">
+                                                        <p>@item.Product.product_desc</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td data-th="Price"><input type="text" class="form-control price" value="@item.Product.product_price" readonly="readonly"></td>
+                                        <td data-th="Quantity">
+                                            <input type="text" class="form-control @txt_class" value="@item.Quantity" />
+                                        </td>
+                                        <td data-th="Subtotal" class="text-center"><input type="text" class="form-control total" value="@total" readonly="readonly"></td>
+                                        <td class="actions" data-th="">
+                                            <div class="btn-group">
+                                                <a href="" data-id="@item.Product.product_id" class="updateCart"><i class="fa fa-refresh"></i></a>
+
+                                                <a asp-controller="Home" asp-action="deleteCart" asp-route-id="@item.Product.product_id"><i class="fa fa-trash-o"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    @{
+                                        var total1 = 0;
+                                        var count = 0;
+                                    }
+                                    @foreach (var item in ViewBag.carts)
+                                    {
+                                        total1 = total1 + (item.Product.product_price * item.Quantity);
+                                        count = count + item.Quantity;
+                                    }
+                                    <div style="width: 30%;" hidden>
+                                        <input hidden name="total" class="form-control" type="text" value="@total1">
+                                        <input hidden name="quantity" class="form-control" type="text" value="@count">
+                                    </div>
+                                    <td><a asp-controller="Home" asp-action="Index"><i class="fa fa-angle-left"></i> Tiếp tục mua hàng</a></td>
+                                    <td colspan="2" class="hidden-xs"></td>
+                                    <td class="hidden-xs text-center"><b class="net_total">Tổng tiền :  @total1 đ</b></td>
+                                    <td><button type="submit" class="btn btn-success">Thanh toán</button></td>
+
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div class="row" style="margin: auto;">
+                            @if (Model.user_id == 26)
+                            {
+                                <h1 style="margin:auto">Đăng nhập...</h1>
+                            }
+                            else
+                            {
+                                <div class="col-md-4 bordered-box">
+                                    <p class="text-center">
+                                        <strong>Thông tin đơn hàng</strong>
+                                    </p>
+                                    <input name="user_id" class="form-control" type="hidden" value="@Model.user_id">
+                                    <b>Người nhận:</b> <input name="name" class="form-control" type="text" value="@Model.first_name @Model.last_name"><br>
+                                    <b>Email:</b> <input name="email" class="form-control" type="text" value="@Model.email"><br>
+                                    <b>Số điện thoại:</b> <input name="phone" class="form-control" type="text" value="@Model.mobile"><br>
+                                    <b>Địa chỉ:</b> <input name="address" class="form-control" type="text" value="@Model.address1"><br>
+                                    <b>Ghi chú:</b> <input name="note" class="form-control" type="text" value="note"><br>
+                                </div>
+                            }
+                            @if (Model.user_id != 26)
+                            {
+                                <div class="col-md-6 bordered-box">
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="text-center">
+                                                    <strong>Phương thức thanh toán</strong>
+                                                </p>
+
+                                                <div class="row" style="margin-bottom: 15px;">
+                                                    <div class="col-md-12">
+                                                        <input class="form-check-input" type="radio" name="payment" id="shipcod" value="shipcod" checked>
+                                                        <img class="method-icon" width="32" src="https://cdn.iconscout.com/icon/premium/png-256-thumb/cash-on-delivery-1448072-1223817.png" alt="shipcod">
+
+                                                        <label class="form-check-label" for="shipcod">
+                                                            Thanh toán tiền mặt khi nhận hàng
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="margin-bottom: 15px;">
+                                                    <div class="col-md-12">
+                                                        <input class="form-check-input" type="radio" name="payment" id="momo" value="momo">
+                                                        <img class="method-icon" width="32" src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-mo-mo.svg" alt="momo">
+                                                        <label class="form-check-label" for="momo">
+                                                            Thanh toán bằng ví MoMo
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="margin-bottom: 15px;">
+                                                    <div class="col-md-12">
+                                                        <input class="form-check-input" type="radio" name="payment" id="qrpay" value="qrpay">
+                                                        <img class="method-icon" width="32" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAbFBMVEX///8AAADv7++CgoJgYGDs7Ox7e3u+vr7c3Nx3d3cTExMWFhYoKCiTk5Ovr6/S0tIjIyPAwMDLy8u2trZaWlpSUlKLi4v19fWZmZmgoKDIyMinp6ewsLAbGxve3t47OztqamovLy9LS0tDQ0NxF+GnAAAEkklEQVR4nO3d6XqiMBiGYcUFcKxsCgpubc//HEedNpnypSEJYX+fn5IB7nauGYgss7mk1WwYrWSIGYRDCEII+x+EEPY/RaGfJO6jKMrzPI6DIPC8rvdcOc977G8cP/Y8ip6IJPEFwqTr3bRaMkmh2/VOWc2FcPBNUxh1vVNWiyYpzNlSx1qZ0t5k9jbI1pnLhM7cWmsl4dreBhmxLeFCSbiwt0GpMG5UeL+EP7vcGxXG7KO2hEuybNm6MBiVMGAfQVivfgm9UQk99tEEhKvvZlToOSuTMjaFoCn0M6PtOZzDD2qoi+cIxuvFDlI0hWqHQPX3mI83nWtrW8jn2iD8F4TVQQihbhCWEwgdtzge356l6Rvr+Or0rCiK3c6iMNid6Pb+2+Bze8XVovBE9k+URaHS9gqLwqPKBjcy4Z4M39cWsr80vRDKgrAN4RuEEM5O63KnkQn7/m9pfWET/x9CCCGEEEIIIYQQQgjh2IT1z/EhhBBCCCFUmtWHEEIIGxUWEEIIYefC3eiF5/mfyjahRWG4qd7g/GxRqNkArzbRDEIIdYOwHITVCYQHIjywZeMQCi6xZ8s6FKrdIElbUKHF4bTMWOiTi2CUWtwMhbeF2QZ9Y2HturvDEkJbQQihdhBCqF13TxyQlq0XllqrPbcosbdB06MwhBBCCI25+7IcnyBL92QZO2Q6kWW0fTr7ffid7sv1UL3O5UH3mGZDD/zYMjoByqfmfLqMJrgriBXOSJ5gFabHpbw/hkKlQ2nZs022EEIIIYQQQgghhBBCCCGEQxI2en4oE7Z2fmh8jn/YHw4fn5+32+19G4aXy0bws+LCDs/xLUaJy+o/NKjGL7xAOPhCCAffdvTCdwjbrJFrMW4SIb0WI6V7tSKD1js6Sq1GrqeRCemB+oXuleC41O+BkF8T9SkRmp5bQNiu8APCwQvp/RZjE9InQ45NSH+Hsm+5WxNavN/iWF6Xf+yDsO17ZtoXWrzvSRaEryDUCcLqICw1RaHge4trW8JM5f9IgZC+G4t/iZJetj8Lb/TVVvFmWx7l05UaC106oUvjJ+aadzoLfo507Xs6KqKjevo0M5rgdfCC4S4dBeGEhc0+vxRCCCGEEEIIIYQQQgghtCWUfTNjKrR5BlxfmJIrJddXrxx/Kyi91HJBhl/P9AJQte8hWnp3XkDXIJtaangmqiWh7FEoDc8mjl/YxFs6IYQQQgh/Cuu/OQBCCCGEsEpY/90IEEIIYStCfn/pAM+ArzuF2As1RMLYLRUVPqn4Hp2VR7vRmQ5PIzLMWKiZ5tvjaYKZqIavxdBsgLOJmkEIIYRfQfhrjuZ4Wr+Ezlf898WFHr28UaWMPRejQ+HqG8bfcOZRYe26E/LD2CkJg1EJ+XE9hPXqlzAelTBmH01JmI9KmLOPmhXyiRe9uxEEQsFwYyE7zKkfvzQikywTJFuVbBRbJBJGsi0OrmiSQsV5qoHkQjj4pilUezfTUEomKfST5PUFQZTneRwHQeB51SvqSZ732N84fux59PouI0l8gVCQ6Vxb2wkO8ngQDiIIIex/EELY/6TCvzIlqPMkgRIQAAAAAElFTkSuQmCC" alt="airpay">
+
+                                                        <label class="form-check-label" for="qrpay">
+                                                            Thanh toán bằng QRPay
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p class="text-center">
+                                                    <strong>Quét mã</strong>
+                                                </p>
+                                                <div class="row" id="qr-code" style="text-align: center;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+
+                            }
+                        </div>
+                        
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>	
+<script>
+    $(document).ready(function () {
+        $('input[type=radio][name=payment]').change(function () {
+            if (this.value == 'momo') {
+                $("#qr-code").html("<img width='350px' src='/img/MoMo.png' alt='momo'>");
+            } else if (this.value == 'qrpay') {
+                $("#qr-code").html("<img width='280px' src='/img/QRPay.png' alt='qrpay'>");
+            } else {
+                $("#qr-code").html("");
+            }
+        });
+    });
+</script>

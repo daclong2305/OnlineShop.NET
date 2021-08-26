@@ -1,0 +1,54 @@
+﻿@model Categories
+@{
+    ViewData["title"] = "Thêm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouta.cshtml";
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản lý Category</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Home/Index">Home</a></li>
+                    <li class="breadcrumb-item active">DataTables</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- End Navbar -->
+<div class="content">
+    <div class="container-fluid">
+        <!-- your content here -->
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Thêm Categories</h4>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" name="form" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group bmd-form-group">
+                                    <label asp-for="cat_id" class="bmd-label-floating">Mã</label>
+                                    <input asp-for="cat_id" type="text" id="cat_id" name="cat_id" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group bmd-form-group">
+                                    <label asp-for="cat_title" class="bmd-label-floating">Tên</label>
+                                    <input asp-for="cat_title" type="text" name="cat_title" id="cat_title" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" value="CreateCategory" name="btn_save" id="btn_save" class="btn btn-primary pull-right">Thêm</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,272 @@
+﻿@model IEnumerable<ViewModel9>
+@{
+    ViewData["title"] = "Trang chủ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouta.cshtml";
+}
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Dashboard</h1>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Home/Index">Home</a></li>
+                    <li class="breadcrumb-item active">Dashboard v1</li>
+                </ol>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<section class="content">
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>@ViewBag.countord0</h3>
+                        <!-- <h3>150</h3> -->
+
+                        <p>Đơn hàng mới</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="/Admin/Order/OrderIndex" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>@ViewBag.countpro</h3>
+                        <p>Sản phẩm</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/Admin/Product/ProductIndex" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>@ViewBag.countpro5</h3>
+                        <p>Sắp hết hàng</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/Admin/Order/OrderIndex" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>@ViewBag.countpro0</h3>
+                        <p>Hết hàng</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/Admin/Product/ProductIndex" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Thống kê báo cáo</h5>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fas fa-wrench"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <a href="#" class="dropdown-item">Action</a>
+                                    <a href="#" class="dropdown-item">Another action</a>
+                                    <a href="#" class="dropdown-item">Something else here</a>
+                                    <a class="dropdown-divider"></a>
+                                    <a href="#" class="dropdown-item">Separated link</a>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- /.col -->
+                            <div class="col-md-6">
+                                <p class="text-center">
+                                    <strong>Mục tiêu trong tháng</strong>
+                                </p>
+
+                                <div class="progress-group">
+                                    Tổng số đơn hàng ghi nhận
+                                    <span class="float-right">
+                                        <b>
+                                            @ViewBag.countordall
+                                            @{ var percent = @ViewBag.countordall * 100 / 200; }
+                                        </b>/200
+                                    </span>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-primary" style="width: @percent%"></div>
+                                    </div>
+                                </div>
+                                <!-- /.progress-group -->
+
+                                <div class="progress-group">
+                                    Đơn hàng đã hoàn thành
+                                    <span class="float-right">
+                                        <b>
+                                            @ViewBag.countord1
+                                            @{ var percent1 = @ViewBag.countord1 * 100 / 200; }
+                                        </b>/200
+                                    </span>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-danger" style="width: @percent1%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- /.progress-group -->
+                                <div class="progress-group">
+                                    <span class="progress-text">Tổng số sản phẩm bán ra</span>
+                                    <span class="float-right">
+                                        <b>
+                                            @ViewBag.soldpro
+                                            @{ var percent2 = @ViewBag.soldpro * 100 / 500; }
+                                        </b>/500
+                                    </span>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-success" style="width: @percent2%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- /.progress-group -->
+                                <div class="progress-group">
+                                    Số lượng feedback sản phẩm
+                                    <span class="float-right">
+                                        <b>
+                                            @ViewBag.countrev
+                                            @{ var percent3 = @ViewBag.countrev * 100 / 500; }
+                                        </b>/500
+                                    </span>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-warning" style="width: @percent3%"></div>
+                                    </div>
+                                </div>
+                                <!-- /.progress-group -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-6">
+                                <p class="text-center">
+                                    <strong>Top 3 khách hàng mua nhiều nhất</strong>
+                                </p>
+                                <table class="table table-bordered table-hover">
+                                    <tr>
+                                        <th>TOP</th>
+                                        <th>Người dùng</th>
+                                        <th>Số đơn hàng</th>
+                                    </tr>
+                                    @{ var i = 1; }
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @i <i class='fas fa-crown'></i>
+                                                @{ i = i + 1; }
+                                            </td>
+                                            <td>
+                                                @item.email
+                                            </td>
+                                            <td>
+                                                @item.count
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- ./card-body -->
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block border-right">
+                                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
+                                    <h5 class="description-header">
+                                        @ViewBag.sum đ
+                                    </h5>
+                                    <span class="description-text">Tổng doanh thu</span>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block border-right">
+                                    <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
+                                    <h5 class="description-header">
+                                        @ViewBag.user
+                                    </h5>
+                                    <span class="description-text">Số lượng người dùng</span>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+
+                            <!-- /.col -->
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block border-right">
+                                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
+                                    <h5 class="description-header">
+                                        @ViewBag.countproall
+                                    </h5>
+                                    <span class="description-text">Tổng số sản phẩm</span>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block border-right">
+                                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
+                                    <h5 class="description-header">
+                                        @ViewBag.brand
+                                    </h5>
+                                    <span class="description-text">Thương hiệu</span>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>

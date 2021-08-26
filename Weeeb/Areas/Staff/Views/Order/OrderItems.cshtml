@@ -1,0 +1,113 @@
+﻿@model IEnumerable<ViewModel6>
+@{
+    ViewData["title"] = "Sản phẩm đơn hàng";
+    Layout = "~/Areas/Staff/Views/Shared/_Layouta.cshtml";
+}
+
+<script src="~/js/jquery.min.js"></script>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản lý đơn hàng</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Staff/Home/Index">Home</a></li>
+                    <li class="breadcrumb-item active">DataTables</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<div class="content">
+    <div class="container-fluid">
+        <!-- your content here -->
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="modal-title">Danh sách sản phẩm trong đơn</h3>
+                </div>
+                <div class="card-body">
+                    <label>Đơn hàng: </label> <input type="text" id="order_id" value="@ViewBag.oid" size="1" style="border-style:none" readonly>
+                    <div id="approval">
+                        <a href="Items?Id=@ViewBag.oid"><button type="button" class="btn btn-success" id="accept">Duyệt</button></a>
+                        <a href="DeleteOrder?Id=@ViewBag.oid"><button type="button" class="btn btn-warning" id="decline">Hủy</button></a>
+                    </div>
+                    <br>
+                    <table class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="">
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Tình trạng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.product_title
+                                    </td>
+                                    <td>
+                                        @item.product_price
+                                    </td>
+                                    <td>
+                                        @item.quantity
+                                    </td>
+                                    <td>
+                                        @item.unit_price
+                                    </td>
+                                    @if (item.stock > item.quantity)
+                                    {
+                                        <td>
+                                            <span class='badge bg-success'>Đủ hàng</span>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <span class='badge bg-warning'>Không đủ hàng</span>
+                                            @{ var a = item.quantity - item.stock; }
+                                            Thiếu @a cái
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function reload() {
+        window.location.reload();
+    }
+    $(document).ready(function () {
+        $("#accept").click(function () {
+            var text = "<div class='alert alert-success'>" +
+                "<a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a>" +
+                "<b>Đã duyệt đơn hàng</b>" +
+                "</div>";
+            $("#approval").prepend(text);
+            setTimeout(reload, 2000);
+
+        });
+
+        $("#decline").click(function () {
+            //var order_id = $("#order_id").val();
+            var text = "<div class='alert alert-warning'>" +
+                "<a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a>" +
+                "<b>Đã hủy đơn hàng</b>" +
+                "</div>";
+            $("#approval").prepend(text);
+            setTimeout(reload, 2000);
+        });
+    });
+</script>

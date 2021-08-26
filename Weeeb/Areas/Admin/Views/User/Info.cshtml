@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Orders>
+@{
+    ViewData["title"] = "Thông tin người dùng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouta.cshtml";
+}
+<div class="content">
+    <div class="container-fluid">
+        <div class="col-md-14">
+            <div class="card ">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Chi tiết người dùng</h4>
+                </div>
+                <div class="card-body">
+                    <Label>Tổng đơn hàng đã mua: </Label> @ViewBag.demdon đơn hàng
+                    <br>
+                    <Label>Tổng số tiền thanh toán: </Label> @ViewBag.tong đ
+                    <br>
+                    <label>Danh sách đơn hàng:</label>
+                    <br>
+                    <table class="table table-bordered table-hover dataTable dtr-inline">
+                        <tr>
+                            <th>
+                                Ngày đặt
+                            </th>
+                            <th>
+                                Số lượng
+                            </th>
+                            <th>
+                                Tổng tiền
+                            </th>
+                            <th>
+                                Thanh toán
+                            </th>
+                            <th>
+                                Trạng thái
+                            </th>
+                            <th>
+                                Sản phẩm
+                            </th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.order_date
+                                </td>
+                                <td>
+                                    @item.quantity
+                                </td>
+                                <td>
+                                    @item.total
+                                </td>
+                                <td>
+                                    @if (item.paid_status == 1)
+                                    {
+                                        <span class='badge bg-success'>Đã thanh toán</span>
+                                    }
+                                    else
+                                    {
+                                        <span class='badge bg-warning'>Chưa thanh toán</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.status == 1)
+                                    {
+                                        <span class='badge bg-success'>Đã xử lí</span>
+                                    }
+                                    else
+                                    {
+                                        <span class='badge bg-warning'>Chưa xử lí</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a href="UserItems?Id=@item.order_id" class="btn btn-user-item" data-toggle="modal" data-target="#modal-user-item">
+                                        <button type="button" class="btn btn-primary">Sản phẩm</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

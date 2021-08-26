@@ -1,0 +1,194 @@
+﻿@model IEnumerable<Orders>
+@{
+    ViewData["title"] = "Trang chủ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layouta.cshtml";
+}
+
+<div>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Quản lý đơn hàng</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Admin/Home/Index">Home</a></li>
+                        <li class="breadcrumb-item active">DataTables</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-14">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Danh sách đơn hàng</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6"></div>
+                                    <div class="col-sm-12 col-md-6"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="dt-buttons btn-group flex-wrap">
+                                                    <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="example1" type="button"><span>Copy</span></button> <button class="btn btn-secondary buttons-csv buttons-html5" tabindex="0" aria-controls="example1" type="button"><span>CSV</span></button> <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="example1" type="button"><span>Excel</span></button><a href="order_actions.php?action=pdf"> <button class="btn btn-secondary buttons-pdf buttons-html5" tabindex="0" aria-controls="example1" type="button"><span>PDF</span></button></a> <button class="btn btn-secondary buttons-print" tabindex="0" aria-controls="example1" type="button"><span>Print</span></button>
+                                                    <div class="btn-group"><button class="btn btn-secondary buttons-collection dropdown-toggle buttons-colvis" tabindex="0" aria-controls="example1" type="button" aria-haspopup="true" aria-expanded="false"><span>Column visibility</span></button></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                                <div id="example1_filter" class="dataTables_filter">
+                                                    <label>
+                                                        Tìm kiếm:
+                                                        <input id="myInput" type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1" onkeyup="filter()">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <table id="table-product" class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th>Mã đơn hàng</th>
+                                                    <th>Người đặt hàng</th>
+                                                    <th>Ngày đặt hàng</th>
+                                                    <th>Số lượng sản phẩm</th>
+                                                    <th>Thành tiền</th>
+                                                    <th>Thanh toán</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>
+                                                        <a class=" btn btn-success" href="/Admin/Order/CreateOrder">Thêm mới</a>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item.order_id
+                                                        </td>
+                                                        <td>
+                                                            @item.user_id
+                                                        </td>
+                                                        <td>
+                                                            @item.order_date
+                                                        </td>
+                                                        <td>
+                                                            @item.quantity
+                                                        </td>
+                                                        <td>
+                                                            @item.total
+                                                        </td>
+                                                        <td>
+                                                            @if (@item.paid_status == 1)
+                                                            {
+                                                                <span class='badge bg-success'>Đã thanh toán</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class='badge bg-warning'>Chưa thanh toán</span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @if (@item.status == 1)
+                                                            {
+                                                                <span class='badge bg-success'>Đã xử lí</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class='badge bg-warning'>Chưa xử lí</span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <a href="OrderDetail?Id=@item.order_id" class="btn btn-detail">
+                                                                <button type="button" class="btn btn-primary">Chi tiết</button>
+                                                            </a>
+                                                            <a href="OrderItems?Id=@item.order_id" class="btn btn-item">
+                                                                <button type="button" class="btn btn-primary" edit_id="1">Sản phẩm</button>
+                                                            </a>
+                                                            <a href="DeleteOrder?Id=@item.order_id" class="btn btn-remove">
+                                                                <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="~/plugins/jszip/jszip.min.js"></script>
+<script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<script>
+    function filter() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("table-product");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+    }
+
+
+
+    $(document).ready(function () {
+        $(function () {
+            $('#table-product').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    });
+</script>
